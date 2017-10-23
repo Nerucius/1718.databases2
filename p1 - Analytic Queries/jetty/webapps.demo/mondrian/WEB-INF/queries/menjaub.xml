@@ -1,90 +1,84 @@
 <Schema name="MenjaUB">
-  <Dimension type="TimeDimension" visible="true" name="Date">
+  <Dimension type="TimeDimension" visible="true" highCardinality="false" name="Date">
     <Hierarchy name="default" visible="true" hasAll="true" primaryKey="id">
-      <Table name="dates" alias="">
+      <Table name="dates">
       </Table>
-      <Level name="year" visible="true" column="year" uniqueMembers="false" levelType="TimeYears">
+      <Level name="year" visible="true" column="year" type="String" uniqueMembers="false" levelType="TimeYears" hideMemberIf="Never">
       </Level>
-      <Level name="quarter" visible="true" column="quarter" uniqueMembers="false" levelType="TimeQuarters">
+      <Level name="quarter" visible="true" column="quarter" type="String" uniqueMembers="false" levelType="TimeQuarters" hideMemberIf="Never">
       </Level>
-      <Level name="month" visible="true" column="month" uniqueMembers="false" levelType="TimeMonths">
+      <Level name="month" visible="true" column="month" type="String" uniqueMembers="false" levelType="TimeMonths" hideMemberIf="Never">
       </Level>
-      <Level name="week" visible="true" column="week" uniqueMembers="false" levelType="TimeWeeks">
+      <Level name="week" visible="true" column="week" type="String" uniqueMembers="false" levelType="TimeWeeks" hideMemberIf="Never">
       </Level>
     </Hierarchy>
   </Dimension>
-  <Dimension type="StandardDimension" visible="true" name="Customer">
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="Customer">
     <Hierarchy name="default" visible="true" hasAll="true" primaryKey="id">
-      <Table name="customers" alias="">
+      <Table name="customers">
       </Table>
-      <Level name="name" visible="true" column="name" uniqueMembers="false">
+      <Level name="name" visible="true" column="name" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
       </Level>
     </Hierarchy>
   </Dimension>
-  <Dimension type="StandardDimension" visible="true" name="Table">
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="Table">
     <Hierarchy name="default" visible="true" hasAll="true" primaryKey="number">
-      <Table name="tables" alias="">
+      <Table name="tables">
       </Table>
-      <Level name="details" visible="true" column="details" uniqueMembers="false">
+      <Level name="seats" visible="true" column="seats" type="String" uniqueMembers="false">
+      </Level>
+      <Level name="details" visible="true" column="details" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
       </Level>
     </Hierarchy>
   </Dimension>
-  <Dimension type="StandardDimension" visible="true" name="Staff">
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="Staff">
     <Hierarchy name="default" visible="true" hasAll="true" primaryKey="id">
-      <Table name="staff" alias="">
+      <Table name="staff">
       </Table>
-      <Level name="name" visible="true" table="staff" column="name" uniqueMembers="false">
+      <Level name="role" visible="true" column="staff_role" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+      <Level name="name" visible="true" column="name" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
       </Level>
     </Hierarchy>
   </Dimension>
-  <Dimension type="StandardDimension" visible="true" name="Order">
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="Order">
     <Hierarchy name="default" visible="true" hasAll="true" primaryKey="id">
       <Table name="orders">
       </Table>
-      <Level name="details" visible="true" column="details" uniqueMembers="false">
+      <Level name="details" visible="true" column="details" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
       </Level>
     </Hierarchy>
   </Dimension>
-  <Dimension type="StandardDimension" visible="true" name="Menu Item">
+  <Dimension type="StandardDimension" visible="true" highCardinality="false" name="Menu Item">
     <Hierarchy name="default" visible="true" hasAll="true" primaryKey="id">
-      <Table name="menu_item">
+      <Table name="menu_items" alias="">
       </Table>
       <Level name="description" visible="true" column="description" uniqueMembers="false">
       </Level>
     </Hierarchy>
   </Dimension>
-  <Cube name="Orders" visible="true" description="Orders Cube" cache="false" enabled="true">
-    <Table name="fact_orders">
-    </Table>
-    <DimensionUsage source="Date" name="Date" visible="true" foreignKey="date_id">
-    </DimensionUsage>
-    <DimensionUsage source="Customer" name="Customer" visible="true" foreignKey="customer_id">
-    </DimensionUsage>
-    <DimensionUsage source="Table" name="Table" visible="true" foreignKey="table_number">
-    </DimensionUsage>
-    <DimensionUsage source="Staff" name="Staff" visible="true" foreignKey="staff_id">
-    </DimensionUsage>
-    <Measure name="Amount" column="amount" datatype="Numeric" aggregator="sum" visible="true">
-    </Measure>
-    <Measure name="Sales" column="order_id" datatype="Integer" aggregator="distinct-count" visible="true">
-    </Measure>
-    <Measure name="Customers" column="customer_id" datatype="Integer" aggregator="distinct-count" visible="true">
-    </Measure>
-  </Cube>
+  <Dimension type="StandardDimension" visible="true" name="Booking Origin">
+    <Hierarchy name="default" visible="true" hasAll="true" primaryKey="id">
+      <Table name="booking_origins" alias="">
+      </Table>
+      <Level name="origin" visible="true" column="name" uniqueMembers="false">
+      </Level>
+    </Hierarchy>
+  </Dimension>
   <Cube name="Order Items" visible="true" cache="true" enabled="true">
-    <Table name="fact_order_items" alias="">
+    <Table name="fact_order_items">
     </Table>
-    <DimensionUsage source="Date" name="Date" visible="true" foreignKey="date_id">
+    <DimensionUsage source="Date" name="Date" visible="true" foreignKey="date_id" highCardinality="false">
     </DimensionUsage>
-    <DimensionUsage source="Customer" name="Customer" visible="true" foreignKey="customer_id">
+    <DimensionUsage source="Customer" name="Customer" visible="true" foreignKey="customer_id" highCardinality="false">
     </DimensionUsage>
-    <DimensionUsage source="Table" name="Table" visible="true" foreignKey="table_number">
+    <DimensionUsage source="Table" name="Table" visible="true" foreignKey="table_number" highCardinality="false">
     </DimensionUsage>
-    <DimensionUsage source="Staff" name="Staff" visible="true" foreignKey="staff_id">
+    <DimensionUsage source="Staff" name="Staff" visible="true" foreignKey="staff_id" highCardinality="false">
     </DimensionUsage>
-    <DimensionUsage source="Order" name="Order" visible="true" foreignKey="order_id">
+    <DimensionUsage source="Order" name="Order" visible="true" foreignKey="order_id" highCardinality="false">
     </DimensionUsage>
-    <DimensionUsage source="Menu Item" name="Menu Item" visible="true" foreignKey="menu_item_id">
+    <DimensionUsage source="Menu Item" name="Menu Item" visible="true" foreignKey="menu_item_id" highCardinality="false">
     </DimensionUsage>
     <Measure name="Amount" column="price" aggregator="sum" visible="true">
     </Measure>
@@ -94,5 +88,32 @@
     </Measure>
     <Measure name="Customers" column="customer_id" aggregator="distinct-count" visible="true">
     </Measure>
+  </Cube>
+  <Cube name="Bookings" visible="true" cache="true" enabled="true">
+    <Table name="fact_bookings">
+    </Table>
+    <DimensionUsage source="Customer" name="Customer" visible="true" foreignKey="customer_id" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Table" name="Table" visible="true" foreignKey="table_number" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Date" name="Booking Made" visible="true" foreignKey="date_booked" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Date" name="Booking Date" visible="true" foreignKey="date_booking" highCardinality="false">
+    </DimensionUsage>
+    <DimensionUsage source="Booking Origin" name="Origin" visible="true" foreignKey="booking_origin">
+    </DimensionUsage>
+    <Measure name="Fee" column="booking_fee" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="People" column="number_people" datatype="Integer" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="No Show" column="no_show" datatype="Integer" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="Bookings" column="id" datatype="Integer" aggregator="count" visible="true">
+    </Measure>
+    <CalculatedMember name="No show ratio" dimension="Measures" visible="true">
+      <Formula>
+        <![CDATA[[Measures].[No Show] / [Measures].[Bookings]]]>
+      </Formula>
+    </CalculatedMember>
   </Cube>
 </Schema>

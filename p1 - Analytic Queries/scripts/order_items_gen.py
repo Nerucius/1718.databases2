@@ -17,9 +17,9 @@ random.seed(0)
 
 self_id = 0
 order_id = 1
-for i in range(1, 1000):
+for i in range(1, 1560):
     date_id = random.randint(1,96)
-    customer_id = random.randint(1,20)
+    customer_id = random.randint(1,999)
     staff_id = random.randint(1,4)
     table_number = random.randint(1,5)
 

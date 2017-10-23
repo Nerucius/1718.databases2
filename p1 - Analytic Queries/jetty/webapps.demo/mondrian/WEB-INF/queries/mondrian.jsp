@@ -6,6 +6,29 @@
 <jp:mondrianQuery id="query01" jdbcDriver="org.gjt.mm.mysql.Driver" jdbcUrl="jdbc:mysql://carrotpiracy.com:3306/menjaub" catalogUri="/WEB-INF/queries/menjaub.xml" jdbcUser="menjaub" jdbcPassword="menjaub" connectionPooling="false">
 
 SELECT {
+	[Measures].[people], [Measures].[fee],[Measures].[no show ratio]
+} ON COLUMNS,
+{
+	[Origin]
+} ON ROWS
+
+FROM [Bookings]
+
+</jp:mondrianQuery>
+
+<!--
+SELECT {
+	[Measures].[people], [Measures].[fee],[Measures].[no show ratio]
+} ON COLUMNS,
+{
+	[Booking Date]
+} ON ROWS
+
+FROM [Bookings]
+-->
+
+<!-- 
+SELECT {
 	[Measures].[orders], [Measures].[amount], [Measures].[item sales], [Measures].[customers]
 } ON COLUMNS,
 {
@@ -13,10 +36,7 @@ SELECT {
 } ON ROWS
 
 FROM [Order Items]
-
-</jp:mondrianQuery>
-
-
+-->
 
 
 

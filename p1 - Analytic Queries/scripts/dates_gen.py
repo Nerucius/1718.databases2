@@ -14,5 +14,5 @@ for year in years:
         month_in_quarter = month % 3 +1
 
         for week in weeks:
-            print "%d;%d;%d;%d;%d" % (id, year, quarter, month_in_quarter, week)
+            print "%d;%d;%d;%d;%d" % (id, year, quarter, month+1, week)
             id += 1
