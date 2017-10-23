@@ -1,0 +1,76 @@
+<Schema name="MenjaUB">
+  <Dimension type="TimeDimension" visible="true" name="Date">
+    <Hierarchy name="default" visible="true" hasAll="true" primaryKey="id">
+      <Table name="dates" alias="">
+      </Table>
+      <Level name="year" visible="true" column="year" uniqueMembers="false" levelType="TimeYears">
+      </Level>
+      <Level name="month" visible="true" column="month" uniqueMembers="false" levelType="TimeMonths">
+      </Level>
+      <Level name="day" visible="true" column="day" uniqueMembers="false" levelType="TimeDays">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" name="Customer">
+    <Hierarchy name="default" visible="true" hasAll="true" primaryKey="id">
+      <Table name="customers" alias="">
+      </Table>
+      <Level name="name" visible="true" column="name" uniqueMembers="false">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" name="Table">
+    <Hierarchy name="default" visible="true" hasAll="true" primaryKey="number">
+      <Table name="tables" alias="">
+      </Table>
+      <Level name="details" visible="true" column="details" uniqueMembers="false">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" name="Staff">
+    <Hierarchy name="default" visible="true" hasAll="true" primaryKey="id">
+      <Table name="staff" alias="">
+      </Table>
+      <Level name="name" visible="true" table="staff" column="name" uniqueMembers="false">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" name="Order Menu">
+    <Hierarchy name="default" visible="true" hasAll="true" primaryKey="id" primaryKeyTable="order_menus">
+      <Join leftKey="id" rightAlias="" rightKey="order_menu_id">
+        <Table name="order_menus" schema="">
+        </Table>
+        <Table name="order_menu_item" alias="">
+        </Table>
+      </Join>
+      <Level name="description" visible="true" table="order_menu_item" column="description" uniqueMembers="false">
+      </Level>
+      <Level name="quantity" visible="true" table="order_menu_item" column="quantity" uniqueMembers="false">
+      </Level>
+      <Level name="price" visible="true" table="order_menu_item" column="price" uniqueMembers="false">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Cube name="Orders" visible="true" description="Orders Cube" cache="false" enabled="true">
+    <Table name="fact_orders">
+    </Table>
+    <DimensionUsage source="Date" name="Date" visible="true" foreignKey="date_id">
+    </DimensionUsage>
+    <DimensionUsage source="Customer" name="Customer" visible="true" foreignKey="customer_id">
+    </DimensionUsage>
+    <DimensionUsage source="Table" name="Table" visible="true" foreignKey="table_number">
+    </DimensionUsage>
+    <DimensionUsage source="Staff" name="Staff" visible="true" foreignKey="staff_id">
+    </DimensionUsage>
+    <DimensionUsage source="Order Menu" name="Order Menu" visible="true" foreignKey="menu_id">
+    </DimensionUsage>
+    <Measure name="Amount" column="amount" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="Sales" column="order_id" datatype="Integer" aggregator="count" visible="true">
+    </Measure>
+    <Measure name="Customers" column="customer_id" datatype="Integer" aggregator="distinct-count" visible="true">
+    </Measure>
+    <Measure name="Price" column="[Order Menu].price" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+  </Cube>
+</Schema>

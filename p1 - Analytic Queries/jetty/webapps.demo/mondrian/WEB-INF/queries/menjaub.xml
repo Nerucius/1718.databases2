@@ -1,0 +1,98 @@
+<Schema name="MenjaUB">
+  <Dimension type="TimeDimension" visible="true" name="Date">
+    <Hierarchy name="default" visible="true" hasAll="true" primaryKey="id">
+      <Table name="dates" alias="">
+      </Table>
+      <Level name="year" visible="true" column="year" uniqueMembers="false" levelType="TimeYears">
+      </Level>
+      <Level name="quarter" visible="true" column="quarter" uniqueMembers="false" levelType="TimeQuarters">
+      </Level>
+      <Level name="month" visible="true" column="month" uniqueMembers="false" levelType="TimeMonths">
+      </Level>
+      <Level name="week" visible="true" column="week" uniqueMembers="false" levelType="TimeWeeks">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" name="Customer">
+    <Hierarchy name="default" visible="true" hasAll="true" primaryKey="id">
+      <Table name="customers" alias="">
+      </Table>
+      <Level name="name" visible="true" column="name" uniqueMembers="false">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" name="Table">
+    <Hierarchy name="default" visible="true" hasAll="true" primaryKey="number">
+      <Table name="tables" alias="">
+      </Table>
+      <Level name="details" visible="true" column="details" uniqueMembers="false">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" name="Staff">
+    <Hierarchy name="default" visible="true" hasAll="true" primaryKey="id">
+      <Table name="staff" alias="">
+      </Table>
+      <Level name="name" visible="true" table="staff" column="name" uniqueMembers="false">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" name="Order">
+    <Hierarchy name="default" visible="true" hasAll="true" primaryKey="id">
+      <Table name="orders">
+      </Table>
+      <Level name="details" visible="true" column="details" uniqueMembers="false">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" name="Menu Item">
+    <Hierarchy name="default" visible="true" hasAll="true" primaryKey="id">
+      <Table name="menu_item">
+      </Table>
+      <Level name="description" visible="true" column="description" uniqueMembers="false">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Cube name="Orders" visible="true" description="Orders Cube" cache="false" enabled="true">
+    <Table name="fact_orders">
+    </Table>
+    <DimensionUsage source="Date" name="Date" visible="true" foreignKey="date_id">
+    </DimensionUsage>
+    <DimensionUsage source="Customer" name="Customer" visible="true" foreignKey="customer_id">
+    </DimensionUsage>
+    <DimensionUsage source="Table" name="Table" visible="true" foreignKey="table_number">
+    </DimensionUsage>
+    <DimensionUsage source="Staff" name="Staff" visible="true" foreignKey="staff_id">
+    </DimensionUsage>
+    <Measure name="Amount" column="amount" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="Sales" column="order_id" datatype="Integer" aggregator="distinct-count" visible="true">
+    </Measure>
+    <Measure name="Customers" column="customer_id" datatype="Integer" aggregator="distinct-count" visible="true">
+    </Measure>
+  </Cube>
+  <Cube name="Order Items" visible="true" cache="true" enabled="true">
+    <Table name="fact_order_items" alias="">
+    </Table>
+    <DimensionUsage source="Date" name="Date" visible="true" foreignKey="date_id">
+    </DimensionUsage>
+    <DimensionUsage source="Customer" name="Customer" visible="true" foreignKey="customer_id">
+    </DimensionUsage>
+    <DimensionUsage source="Table" name="Table" visible="true" foreignKey="table_number">
+    </DimensionUsage>
+    <DimensionUsage source="Staff" name="Staff" visible="true" foreignKey="staff_id">
+    </DimensionUsage>
+    <DimensionUsage source="Order" name="Order" visible="true" foreignKey="order_id">
+    </DimensionUsage>
+    <DimensionUsage source="Menu Item" name="Menu Item" visible="true" foreignKey="menu_item_id">
+    </DimensionUsage>
+    <Measure name="Amount" column="price" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="Orders" column="order_id" aggregator="distinct-count" visible="true">
+    </Measure>
+    <Measure name="Item Sales" column="id" aggregator="count" visible="true">
+    </Measure>
+    <Measure name="Customers" column="customer_id" aggregator="distinct-count" visible="true">
+    </Measure>
+  </Cube>
+</Schema>
